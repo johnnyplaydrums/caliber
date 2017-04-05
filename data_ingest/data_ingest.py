@@ -8,7 +8,11 @@ def hello():
 
 @application.route("/data", methods=["POST"])
 def data_ingest():
-    print(request.get_json()['x_data'])
+    print('X DATA', request.get_json()['x_data'][0:10])
+    print('Y DATA', request.get_json()['y_data'][0:10])
+    print('Z DATA', request.get_json()['z_data'][0:10])
+    # print('LAT DATA', request.get_json()['lat_data'][0:10])
+    # print('LONG DATA', request.get_json()['long_data'][0:10])
     return jsonify(result="success")
 
 @application.route("/get_data", methods=["GET"])

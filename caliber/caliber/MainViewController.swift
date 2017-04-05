@@ -25,11 +25,13 @@ class MainViewController: UIViewController, CLLocationManagerDelegate {
     
     @IBOutlet weak var latitude: UILabel!
     @IBOutlet weak var longitude: UILabel!
-    var global_lat = ""
-    var global_long = ""
+    var global_lat: Double = 0.0
+    var global_long: Double = 0.0
     var x_array: [Double] = []
     var y_array: [Double] = []
     var z_array: [Double] = []
+    var lat_array: [Double] = []
+    var long_array: [Double] = []
     
     override func viewDidLoad()
     {
@@ -51,12 +53,12 @@ class MainViewController: UIViewController, CLLocationManagerDelegate {
     }
 
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations:[CLLocation]) {
-//        print("locations = \(locations)")
         latitude.text = String(locations[locations.count - 1].coordinate.latitude)
         longitude.text = String(locations[locations.count - 1].coordinate.longitude)
-        global_lat = String(locations[locations.count - 1].coordinate.latitude)
-        global_long = String(locations[locations.count - 1].coordinate.longitude)
+        global_lat = locations[locations.count - 1].coordinate.latitude
+        global_long = locations[locations.count - 1].coordinate.longitude
     }
+    
     
     
     func gyro_update()
@@ -75,13 +77,23 @@ class MainViewController: UIViewController, CLLocationManagerDelegate {
             z_array.append(z_data)
         }
         
+        lat_array.append(global_lat)
+        long_array.append(global_long)
+        
     }
     
     func post_data(){
         print("POST CALLED")
         let url = URL(string: "http://34.205.150.122/data")!
         var request = URLRequest(url: url)
-        let jsonObject: [String: [Double]]  = [ "x_data": x_array, "y_data": y_array, "z_data": z_array ]
+        let jsonObject: [String: [Double]]  = [
+            "x_data": x_array,
+            "y_data": y_array,
+            "z_data": z_array,
+            "lat_data": lat_array,
+            "long_data": long_array
+        ]
+        
         let jsonData = try! JSONSerialization.data(withJSONObject: jsonObject, options: [])
         request.httpMethod = "POST"
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
@@ -92,38 +104,18 @@ class MainViewController: UIViewController, CLLocationManagerDelegate {
         x_array.removeAll()
 
         let task = URLSession.shared.dataTask(with: request) { (data, response, error) in
-            guard let data = data, error == nil else {                                                 // check for fundamental networking error
-                print("error=\(error)")
+            guard let data = data, error == nil else {
+                print("error=\(String(describing: error))")
                 return
             }
             
-            if let httpStatus = response as? HTTPURLResponse, httpStatus.statusCode != 200 {           // check for http errors
+            if let httpStatus = response as? HTTPURLResponse, httpStatus.statusCode != 200 {
                 print("statusCode should be 200, but is \(httpStatus.statusCode)")
-                print("response = \(response)")
+                print("response = \(String(describing: response))")
             }
             
-            let responseString = String(data: data, encoding: .utf8)
-            print("responseString = \(responseString)")
-        
-            let jsonDict: [String: AnyObject] = ["test": 1 as AnyObject]
-            let jsonData = try! JSONSerialization.data(withJSONObject: jsonDict, options: [])
-//
-//            request.httpMethod = "POST"
-//            request.setValue("application/json", forHTTPHeaderField: "Content-Type")
-//            request.httpBody = jsonData
-//        
-//            if let error = error {
-//                print("error:", error)
-//                return
-//            }
-//            
-//            do {
-////             let json = try JSONSerialization.jsonObject(with: data!, options: [])
-//                let string = String(describing: data)
-//                print(string)
-//            } catch {
-//                print("error2:", error)
-//            }
+            let responseJSON = try? JSONSerialization.jsonObject(with: data, options: [])
+            print(responseJSON as Any)
         }
         task.resume()
     }

@@ -2,7 +2,7 @@ $(function() {
     setInterval(function() {
       $.ajax({
         type: 'get',
-        url: 'http://34.205.150.122/get_data',
+        url: 'http://monitorcaliber.com/get_data',
         dataType: "json"
       })
       .done(function(response) {

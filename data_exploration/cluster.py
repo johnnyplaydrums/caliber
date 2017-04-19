@@ -69,18 +69,23 @@ def classify_graph(data):
             
 def classify(data):
     breaks = get_jenks_breaks(data, 3)
+    all_tuples = []
     print(breaks)
 
     for num in data:
         if num >= breaks[0] and num <= breaks[1]:
-            my_tuple = (num , 1)
-            print(my_tuple)
+            my_tuple = (num , 'Good')
+            all_tuples.append(my_tuple)
+            #print(my_tuple)
         elif num >= breaks[1] and num <= breaks[2]:
-            my_tuple = (num , 2)
-            print(my_tuple)
+            my_tuple = (num , 'Fair')
+            all_tuples.append(my_tuple)
+            #print(my_tuple)
         else:  
-            my_tuple = (num , 3)
-            print(my_tuple)
+            my_tuple = (num , 'Bad')
+            all_tuples.append(my_tuple)
+            #print(my_tuple)
+    print(all_tuples)
         
     for line in breaks:
         plt.plot([line for _ in range(len(data))], 'k--')

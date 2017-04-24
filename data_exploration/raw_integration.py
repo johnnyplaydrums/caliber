@@ -31,7 +31,7 @@ def integrate(filename):
     chunksize = 20
     total_area = []
 
-    for df in pd.read_csv('gyro_x.csv', chunksize=chunksize, iterator=True):
+    for df in pd.read_csv(filename, chunksize=chunksize, iterator=True):
 
         x = df['X'].as_matrix()
         y = df['Y'].as_matrix()

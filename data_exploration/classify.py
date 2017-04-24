@@ -46,7 +46,7 @@ def get_jenks_breaks(data_list, number_class):
         kclass.append(min(data_list))
     kclass[number_class] = float(data_list[len(data_list) - 1])
     count_num = number_class
-    while count_num >= 2: 
+    while count_num >= 2:
         idx = int((mat1[k][count_num]) - 2)
         kclass[count_num - 1] = data_list[idx]
         k = int((mat1[k][count_num] - 1))
@@ -54,8 +54,7 @@ def get_jenks_breaks(data_list, number_class):
     return kclass
 
 def classify_graph(data):
-    tuples
-    breaks = get_jenks_breaks(data, 3)          
+    breaks = get_jenks_breaks(data, 3)
     for line in breaks:
         plt.plot([line for _ in range(len(data))], 'k--')
 
@@ -63,7 +62,7 @@ def classify_graph(data):
     plt.grid(True)
     plt.show()
 
-            
+
 def classify(data):
     breaks = get_jenks_breaks(data, 3)
     all_tuples = []
@@ -78,11 +77,8 @@ def classify(data):
             my_tuple = (num , 'Fair')
             all_tuples.append(my_tuple)
             #print(my_tuple)
-        else:  
+        else:
             my_tuple = (num , 'Bad')
             all_tuples.append(my_tuple)
             #print(my_tuple)
     return all_tuples
-        
-
-

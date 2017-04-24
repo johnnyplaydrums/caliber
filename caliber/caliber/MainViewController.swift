@@ -22,7 +22,6 @@ class MainViewController: UIViewController, CLLocationManagerDelegate {
     @IBOutlet weak var z_label: UILabel!
     
     // Core Location Labels
-    
     @IBOutlet weak var latitude: UILabel!
     @IBOutlet weak var longitude: UILabel!
     var global_lat: Double = 0.0
@@ -64,21 +63,19 @@ class MainViewController: UIViewController, CLLocationManagerDelegate {
     func gyro_update()
     {
         
-        if let x_data = CMmanager.gyroData?.rotationRate.x {
-            x_label.text = String(x_data)
-            x_array.append(x_data)
+        if let x_data = CMmanager.gyroData?.rotationRate.x,
+            let y_data = CMmanager.gyroData?.rotationRate.y,
+            let z_data = CMmanager.gyroData?.rotationRate.z
+        {
+                x_label.text = String(x_data)
+                x_array.append(x_data)
+                y_label.text = String(y_data)
+                y_array.append(y_data)
+                z_label.text = String(z_data)
+                z_array.append(z_data)
+                lat_array.append(global_lat)
+                long_array.append(global_long)
         }
-        if let y_data = CMmanager.gyroData?.rotationRate.y {
-            y_label.text = String(y_data)
-            y_array.append(y_data)
-        }
-        if let z_data = CMmanager.gyroData?.rotationRate.z {
-            z_label.text = String(z_data)
-            z_array.append(z_data)
-        }
-        
-        lat_array.append(global_lat)
-        long_array.append(global_long)
         
     }
     
@@ -87,22 +84,24 @@ class MainViewController: UIViewController, CLLocationManagerDelegate {
         let url = URL(string: "http://monitorcaliber.com/data")!
         var request = URLRequest(url: url)
         let jsonObject: [String: [Double]]  = [
-            "x_data": x_array,
-            "y_data": y_array,
-            "z_data": z_array,
-            "lat_data": lat_array,
-            "long_data": long_array
+            "x": x_array,
+            "y": y_array,
+            "z": z_array,
+            "lat": lat_array,
+            "long": long_array
         ]
         
         let jsonData = try! JSONSerialization.data(withJSONObject: jsonObject, options: [])
         request.httpMethod = "POST"
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
         request.httpBody = jsonData
-        
-        print(x_array)
-        print(x_array.count)
-        x_array.removeAll()
 
+        x_array.removeAll()
+        y_array.removeAll()
+        z_array.removeAll()
+        lat_array.removeAll()
+        long_array.removeAll()
+        
         let task = URLSession.shared.dataTask(with: request) { (data, response, error) in
             guard let data = data, error == nil else {
                 print("error=\(String(describing: error))")

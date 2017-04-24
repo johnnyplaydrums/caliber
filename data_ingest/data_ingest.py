@@ -1,4 +1,6 @@
 from flask import Flask, render_template, request, jsonify
+from utils.process_data import process_data
+
 application = Flask(__name__)
 application.config['SEND_FILE_MAX_AGE_DEFAULT'] = 0
 
@@ -8,11 +10,8 @@ def hello():
 
 @application.route("/data", methods=["POST"])
 def data_ingest():
-    print('X DATA', request.get_json()['x_data'][0:10])
-    print('Y DATA', request.get_json()['y_data'][0:10])
-    print('Z DATA', request.get_json()['z_data'][0:10])
-    print('LAT DATA', request.get_json()['lat_data'][0:10])
-    print('LONG DATA', request.get_json()['long_data'][0:10])
+    data = request.get_json()
+    process_data(data)
     return jsonify(result="success")
 
 @application.route("/get_data", methods=["GET"])

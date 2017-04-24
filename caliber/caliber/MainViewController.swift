@@ -24,13 +24,13 @@ class MainViewController: UIViewController, CLLocationManagerDelegate {
     // Core Location Labels
     @IBOutlet weak var latitude: UILabel!
     @IBOutlet weak var longitude: UILabel!
-    var global_lat: Double = 0.0
-    var global_long: Double = 0.0
-    var x_array: [Double] = []
-    var y_array: [Double] = []
-    var z_array: [Double] = []
-    var lat_array: [Double] = []
-    var long_array: [Double] = []
+    var global_lat: String = "0.0"
+    var global_long: String = "0.0"
+    var x_array: [String] = []
+    var y_array: [String] = []
+    var z_array: [String] = []
+    var lat_array: [String] = []
+    var long_array: [String] = []
     
     override func viewDidLoad()
     {
@@ -54,8 +54,8 @@ class MainViewController: UIViewController, CLLocationManagerDelegate {
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations:[CLLocation]) {
         latitude.text = String(locations[locations.count - 1].coordinate.latitude)
         longitude.text = String(locations[locations.count - 1].coordinate.longitude)
-        global_lat = locations[locations.count - 1].coordinate.latitude
-        global_long = locations[locations.count - 1].coordinate.longitude
+        global_lat = String(locations[locations.count - 1].coordinate.latitude)
+        global_long = String(locations[locations.count - 1].coordinate.longitude)
     }
     
     
@@ -68,13 +68,13 @@ class MainViewController: UIViewController, CLLocationManagerDelegate {
             let z_data = CMmanager.gyroData?.rotationRate.z
         {
                 x_label.text = String(x_data)
-                x_array.append(x_data)
+                x_array.append(String(x_data))
                 y_label.text = String(y_data)
-                y_array.append(y_data)
+                y_array.append(String(y_data))
                 z_label.text = String(z_data)
-                z_array.append(z_data)
-                lat_array.append(global_lat)
-                long_array.append(global_long)
+                z_array.append(String(z_data))
+                lat_array.append(String(global_lat))
+                long_array.append(String(global_long))
         }
         
     }
@@ -83,7 +83,7 @@ class MainViewController: UIViewController, CLLocationManagerDelegate {
         print("POST CALLED")
         let url = URL(string: "http://monitorcaliber.com/data")!
         var request = URLRequest(url: url)
-        let jsonObject: [String: [Double]]  = [
+        let jsonObject: [String: [String]]  = [
             "x": x_array,
             "y": y_array,
             "z": z_array,

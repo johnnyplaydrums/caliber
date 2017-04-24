@@ -1,6 +1,7 @@
 import geocoder, math
+from datetime import datetime
 from flask import Flask, render_template, request, jsonify
-from views.send_to_redshift import send_to_redshift
+from views.send_to_dynamodb import send_to_dynamodb
 
 application = Flask(__name__)
 application.config['SEND_FILE_MAX_AGE_DEFAULT'] = 0
@@ -34,6 +35,8 @@ def data_ingest():
                     'x': [data['x'][index]],
                     'y': [data['y'][index]],
                     'z': [data['z'][index]],
+                    'datetime': datetime.now().strftime('%H:%M:%S %B %d %Y'),
+                    'address': last_address,
                     'processed': 'false'
                 }
 
@@ -46,7 +49,7 @@ def data_ingest():
             address_points[last_address]['y'].append(data['y'][index])
             address_points[last_address]['z'].append(data['z'][index])
 
-    send_to_redshift(address_points)
+    send_to_dynamodb(address_points)
     return jsonify(result="success")
 
 @application.route("/get_data", methods=["GET"])

@@ -26,17 +26,22 @@ for df in pd.read_csv('gyro_x.csv', chunksize=chunksize, iterator=True):
 pp.close()
 print(total_area)"""
 
+
 def integrate(filename):
     chunksize = 20
     total_area = []
-    count = 0
 
-    for df in pd.read_csv('gyro_x.csv', chunksize=chunksize, iterator=True):
+    for df in pd.read_csv(filename, chunksize=chunksize, iterator=True):
 
-	    x = df['Time'].as_matrix()
-	    y = df['X'].as_matrix()
-	    area = simps(y)
-	    total_area.append(abs(area))
-	    count += 1
+        x = df['X'].as_matrix()
+        y = df['Y'].as_matrix()
+        z = df['Z'].as_matrix()
+        area_x = simps(x)
+        area_y = simps(y)
+        area_z = simps(z)
+        area = area_x + area_y + area_z
+        total_area.append(abs(area))
 
     return total_area
+
+print(integrate('gyro_x.csv'))

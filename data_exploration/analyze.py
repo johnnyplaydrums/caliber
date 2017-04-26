@@ -1,6 +1,11 @@
 from classify import *
 from raw_integration import *
+import sys
+import datetime
 
-
-print(classify(integrate('gyro_x.csv')))
-classify_graph(integrate('gyro_x.csv'))
+argv = sys.argv[1]
+now = datetime.datetime.now()
+print(classify(integrate(argv)))
+then = datetime.datetime.now()
+print(then-now)
+classify_graph(integrate(argv))

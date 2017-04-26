@@ -1,3 +1,4 @@
+import requests
 from flask import Flask, render_template, request, jsonify
 from utils.process_data import process_data
 
@@ -9,9 +10,10 @@ def hello():
     return render_template('index.html')
 
 @application.route("/data", methods=["POST"])
-def data_ingest():
+def data_ingest(data):
     data = request.get_json()
-    process_data(data)
+    keys = process_data(data)
+    req = requests.post('http://34.205.34.72/new_data', json=keys)
     return jsonify(result="success")
 
 @application.route("/get_data", methods=["GET"])

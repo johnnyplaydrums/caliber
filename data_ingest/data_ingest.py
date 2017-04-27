@@ -10,7 +10,7 @@ def hello():
     return render_template('index.html')
 
 @application.route("/data", methods=["POST"])
-def data_ingest(data):
+def data_ingest():
     data = request.get_json()
     keys = process_data(data)
     req = requests.post('http://34.205.34.72/new_data', json=keys)

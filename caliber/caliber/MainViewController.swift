@@ -35,6 +35,9 @@ class MainViewController: UIViewController, CLLocationManagerDelegate {
     override func viewDidLoad()
     {
         super.viewDidLoad()
+        
+        // Don't let iphone sleep
+        UIApplication.shared.isIdleTimerDisabled = true
     
         CLmanager.desiredAccuracy = kCLLocationAccuracyBest
         CLmanager.delegate = self

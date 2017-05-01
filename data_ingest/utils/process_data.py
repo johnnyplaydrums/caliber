@@ -22,9 +22,12 @@ def process_data(data):
             address = geocoder.google([current_point[0], current_point[1]], method='reverse')
             address_range = re.search(r'(\d)+-', address.address)
             if address_range != None:
-                print('SPLIT ADDRESS')
+                print('SPLIT ADDRESS:')
+                print(address.address)
                 address = address.address.split('-', 1)[0] + ' ' + address.address.split(' ', 1)[1]
-            last_address = str(int(math.ceil(int(address.address.split(' ', 1)[0]) / 100) * 100)) + ' ' + address.address.split(' ', 1)[1]
+                last_address = str(int(math.ceil(int(address.split(' ', 1)[0]) / 100) * 100)) + ' ' + address.split(' ', 1)[1]
+            else:
+                last_address = str(int(math.ceil(int(address.address.split(' ', 1)[0]) / 100) * 100)) + ' ' + address.address.split(' ', 1)[1]
             if last_address in address_points:
                 address_points[last_address]['lat'].append(current_point[0])
                 address_points[last_address]['long'].append(current_point[1])
@@ -32,7 +35,7 @@ def process_data(data):
                 address_points[last_address]['y'].append(data['y'][index])
                 address_points[last_address]['z'].append(data['z'][index])
             else:
-                print('Adding data to: ', address.address)
+                print('Adding data to', last_address)
                 inserted_at = datetime.now().strftime('%Y%m%d%H%M%S%f')
                 address_points[last_address] = {
                     'lat': [current_point[0]],

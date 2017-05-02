@@ -8,7 +8,8 @@ data_process_table = dynamodb.Table('data-process')
 
 def update_ratings():
     # retrieve all streets
-    addresses = data_process_table.scan()['Items']
+    response = data_process_table.scan()
+    addresses = response['Items']
 
     # if we havent recieve all streets yet, continue collecting the rest
     while 'LastEvaluatedKey' in response:

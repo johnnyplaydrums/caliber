@@ -6,19 +6,35 @@ dynamodb = boto3.resource('dynamodb', region_name='us-east-1')
 data_ingest_table = dynamodb.Table('data-ingest')
 data_process_table = dynamodb.Table('data-process')
 
-def update_dynamo_ratings():
-    response = data_process_table.scan()
-    addresses = response['Items']
+def update_ratings():
+    # retrieve all streets
+    addresses = data_process_table.scan()['Items']
+
+    # if we havent recieve all streets yet, continue collecting the rest
     while 'LastEvaluatedKey' in response:
         print('Getting more!')
         response = table.scan(
             ExclusiveStartKey=response['LastEvaluatedKey']
         )
         addresses.append(response['Items'])
-    buckets = classify(addresses)
-    print('BUCKETED:')
-    print(buckets)
-    return buckets
+
+    # jenks breaks algorithm
+    rated_streets = classify(addresses)
+
+    # update streets with new score
+    for address in rated_streets:
+        updated_at = datetime.now().strftime('%Y%m%d%H%M%S%f')
+        response = data_process_table.update_item(
+            Key={
+                'address': address.address
+            },
+            UpdateExpression="set rating = :r, updated_at = :t",
+            ExpressionAttributeValues={
+                ':r': address.rating,
+                ':t': updated_at
+            }
+        )
+    return rated_streets
 
 
 def get_jenks_breaks(data_list, number_class):

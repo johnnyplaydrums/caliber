@@ -32,6 +32,7 @@ def integrate(df, address):
             'address': address
         }
     )
+
     if u'Item' in address_item:
         item = address_item[u'Item']
         old_mean = decimal.Decimal(item[u'mean'])
@@ -39,7 +40,9 @@ def integrate(df, address):
         new_mean = str(round(((mean_count * old_mean) + decimal.Decimal(total_area)) / (mean_count + 1), 15))
         # print('Update address: %s' % address, old_mean, new_mean)
         r = data_process_table.update_item(
-            Key={'address': address},
+            Key={
+                'address': address
+            },
             UpdateExpression="set mean_count = mean_count + :c, mean = :m",
             ExpressionAttributeValues={
                 ':c': decimal.Decimal(1),
@@ -48,10 +51,12 @@ def integrate(df, address):
         )
     else:
         # print('New address: %s' % address, total_area)
+        inserted_at = datetime.now().strftime('%Y%m%d%H%M%S%f')
         item = {
             'address': address,
             'mean': total_area,
-            'mean_count': decimal.Decimal(1)
+            'mean_count': decimal.Decimal(1),
+            'inserted_at': inserted_at
         }
         data_process_table.put_item(Item=item)
 

@@ -3,7 +3,7 @@ import numpy as np
 from boto3.dynamodb.conditions import Key
 from scipy.integrate import simps
 from integrate import integrate
-from jenks_breaks import classify, update_dynamo_ratings
+from update_ratings import update_ratings
 
 
 dynamodb = boto3.resource('dynamodb', region_name='us-east-1')
@@ -17,5 +17,7 @@ def process_data(keys):
         )
         integrate(r[u'Items'][0], key[0])
 
-    update_dynamo_ratings()
+    ratings = update_ratings()
+    print('Rated streets:')
+    print(ratings)
     return

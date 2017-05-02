@@ -1,5 +1,6 @@
 import boto3, decimal
 import numpy as np
+from datetime import datetime
 from boto3.dynamodb.conditions import Key
 
 dynamodb = boto3.resource('dynamodb', region_name='us-east-1')

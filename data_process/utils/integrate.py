@@ -1,5 +1,6 @@
 import boto3, decimal
 import numpy as np
+from datetime import datetime
 from boto3.dynamodb.conditions import Key
 from scipy.integrate import simps
 
@@ -10,7 +11,7 @@ data_process_table = dynamodb.Table('data-process')
 
 
 def integrate(df, address):
-    chunksize = 20
+    chunksize = 40
     total_area = []
     xa = np.array(df['x']).astype(float)
     ya = np.array(df['y']).astype(float)
@@ -22,7 +23,7 @@ def integrate(df, address):
         area_x = simps(x)
         area_y = simps(y)
         area_z = simps(z)
-        area = area_x + area_y + area_z
+        area = area_x + area_z
         total_area.append(abs(area))
 
     total_area = str(round(np.mean(total_area), 15))
@@ -38,7 +39,7 @@ def integrate(df, address):
         old_mean = decimal.Decimal(item[u'mean'])
         mean_count = item[u'mean_count']
         new_mean = str(round(((mean_count * old_mean) + decimal.Decimal(total_area)) / (mean_count + 1), 15))
-        # print('Update address: %s' % address, old_mean, new_mean)
+        print('Update address: %s' % address, old_mean, new_mean, total_area)
         r = data_process_table.update_item(
             Key={
                 'address': address
@@ -50,7 +51,7 @@ def integrate(df, address):
             },
         )
     else:
-        # print('New address: %s' % address, total_area)
+        print('New address: %s' % address, total_area)
         inserted_at = datetime.now().strftime('%Y%m%d%H%M%S%f')
         item = {
             'address': address,

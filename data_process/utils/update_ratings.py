@@ -28,11 +28,11 @@ def update_ratings():
         updated_at = datetime.now().strftime('%Y%m%d%H%M%S%f')
         response = data_process_table.update_item(
             Key={
-                'address': address.address
+                'address': address['address']
             },
             UpdateExpression="set rating = :r, updated_at = :t",
             ExpressionAttributeValues={
-                ':r': address.rating,
+                ':r': address['rating'],
                 ':t': updated_at
             }
         )
@@ -81,12 +81,12 @@ def get_jenks_breaks(data_list, number_class):
     k = len(data_list)
     kclass = []
     for i in range(number_class + 1):
-        kclass.append(min(data_list))
+        kclass.append(float(min(data_list)))
     kclass[number_class] = float(data_list[len(data_list) - 1])
     count_num = number_class
     while count_num >= 2:
         idx = int((mat1[k][count_num]) - 2)
-        kclass[count_num - 1] = data_list[idx]
+        kclass[count_num - 1] = float(data_list[idx])
         k = int((mat1[k][count_num] - 1))
         count_num -= 1
     return kclass
@@ -100,15 +100,17 @@ def classify(addresses):
     breaks = get_jenks_breaks(data, 3)
     all_tuples = []
     #print(breaks)
-
+    print('BREAKS')
+    print(breaks)
     for num in addresses:
-        if num['mean'] >= breaks[0] and num['mean'] <= breaks[1]:
+        mean = float(num['mean'])
+        if mean >= breaks[0] and mean <= breaks[1]:
             num['rating'] = 'Good'
             all_tuples.append(num)
             # my_tuple = (num , 'Good')
             # all_tuples.append(my_tuple)
             #print(my_tuple)
-        elif num['mean'] >= breaks[1] and num['mean'] <= breaks[2]:
+        elif mean >= breaks[1] and mean <= breaks[3]:
             num['rating'] = 'Fair'
             all_tuples.append(num)
             # my_tuple = (num , 'Fair')

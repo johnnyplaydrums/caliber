@@ -24,7 +24,7 @@ def integrate(df, address):
         area_y = simps(y)
         area_z = simps(z)
         area = area_x + area_z
-        total_area.append(abs(area))
+        total_area.append(area)
 
     total_area = str(round(np.mean(total_area), 15))
 

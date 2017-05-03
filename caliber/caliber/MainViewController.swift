@@ -70,14 +70,14 @@ class MainViewController: UIViewController, CLLocationManagerDelegate {
             let y_data = CMmanager.gyroData?.rotationRate.y,
             let z_data = CMmanager.gyroData?.rotationRate.z
         {
-                x_label.text = String(x_data)
-                x_array.append(String(x_data))
-                y_label.text = String(y_data)
-                y_array.append(String(y_data))
-                z_label.text = String(z_data)
-                z_array.append(String(z_data))
-                lat_array.append(String(global_lat))
-                long_array.append(String(global_long))
+            x_label.text = String(x_data)
+            x_array.append(String(abs(x_data)))
+            y_label.text = String(y_data)
+            y_array.append(String(abs(y_data)))
+            z_label.text = String(z_data)
+            z_array.append(String(abs(z_data)))
+            lat_array.append(String(global_lat))
+            long_array.append(String(global_long))
         }
         
     }

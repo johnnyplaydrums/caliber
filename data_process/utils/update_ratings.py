@@ -99,7 +99,6 @@ def classify(addresses):
 
     breaks = get_jenks_breaks(data, 3)
     all_tuples = []
-    #print(breaks)
     print('BREAKS')
     print(breaks)
     for num in addresses:

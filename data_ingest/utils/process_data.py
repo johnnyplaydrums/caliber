@@ -28,8 +28,10 @@ def process_data(data):
                 print('SPLIT ADDRESS:')
                 print(address.address)
                 address = address.address.split('-', 1)[0] + ' ' + address.address.split(' ', 1)[1]
+                prev = last_address
                 last_address = str(int(math.ceil(int(address.split(' ', 1)[0]) / 100) * 100)) + ' ' + address.split(' ', 1)[1]
             else:
+                prev = last_address
                 last_address = str(int(math.ceil(int(address.address.split(' ', 1)[0]) / 100) * 100)) + ' ' + address.address.split(' ', 1)[1]
 
             if last_address in address_points:
@@ -41,7 +43,13 @@ def process_data(data):
             else:
                 print('Adding data to', last_address)
                 inserted_at = datetime.now().strftime('%Y%m%d%H%M%S%f')
+                address_points[prev] = {
+                    'end_lat': data['lat'][index - 1],
+                    'end_long': data['long'][index - 1]
+                }
                 address_points[last_address] = {
+                    'start_lat': current_point[0],
+                    'start_long': current_point[1],
                     'lat': [current_point[0]],
                     'long': [current_point[1]],
                     'x': [data['x'][index]],

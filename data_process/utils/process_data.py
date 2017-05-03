@@ -15,7 +15,7 @@ def process_data(keys):
         r = data_ingest_table.query(
             KeyConditionExpression=Key('address').eq(str(key[0])) & Key('inserted_at').eq(key[1])
         )
-        integrate(r[u'Items'], key[0])
+        integrate(r[u'Items'][0], key[0])
 
     ratings = update_ratings()
     print('Rated streets:')

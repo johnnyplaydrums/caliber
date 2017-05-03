@@ -57,7 +57,11 @@ def integrate(df, address):
             'address': address,
             'mean': total_area,
             'mean_count': decimal.Decimal(1),
-            'inserted_at': inserted_at
+            'inserted_at': inserted_at,
+            'start_lat': df['start_lat'],
+            'start_long': df['start_long'],
+            'end_lat': df['end_lat'],
+            'end_long': df['end_long']
         }
         data_process_table.put_item(Item=item)
 

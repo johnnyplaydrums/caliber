@@ -15,6 +15,8 @@ def process_data(data):
     address_points = {}
     keys = []
     last_point = (0,0)
+    last_address = None
+    prev = None
 
     for index in range(len(data['lat'])):
         current_point = (data['lat'][index], data['long'][index])
@@ -28,10 +30,12 @@ def process_data(data):
                 print('SPLIT ADDRESS:')
                 print(address.address)
                 address = address.address.split('-', 1)[0] + ' ' + address.address.split(' ', 1)[1]
-                prev = last_address
+                if last_address != None:
+                    prev = last_address
                 last_address = str(int(math.ceil(int(address.split(' ', 1)[0]) / 100) * 100)) + ' ' + address.split(' ', 1)[1]
             else:
-                prev = last_address
+                if last_address != None:
+                    prev = last_address
                 last_address = str(int(math.ceil(int(address.address.split(' ', 1)[0]) / 100) * 100)) + ' ' + address.address.split(' ', 1)[1]
 
             if last_address in address_points:
@@ -43,10 +47,11 @@ def process_data(data):
             else:
                 print('Adding data to', last_address)
                 inserted_at = datetime.now().strftime('%Y%m%d%H%M%S%f')
-                address_points[prev] = {
-                    'end_lat': data['lat'][index - 1],
-                    'end_long': data['long'][index - 1]
-                }
+                if prev != None:
+                    address_points[prev] = {
+                        'end_lat': data['lat'][index - 1],
+                        'end_long': data['long'][index - 1]
+                    }
                 address_points[last_address] = {
                     'start_lat': current_point[0],
                     'start_long': current_point[1],

@@ -15,8 +15,6 @@ def process_data(data):
     address_points = {}
     keys = []
     last_point = (0,0)
-    last_address = None
-    prev = None
 
     for index in range(len(data['lat'])):
         current_point = (data['lat'][index], data['long'][index])
@@ -26,16 +24,12 @@ def process_data(data):
 
             if address.housenumber == None:
                 print('NO HOUSE NUMBER')
-            if address_range != None:
+            elif address_range != None:
                 print('SPLIT ADDRESS:')
                 print(address.address)
                 address = address.address.split('-', 1)[0] + ' ' + address.address.split(' ', 1)[1]
-                if last_address != None:
-                    prev = last_address
                 last_address = str(int(math.ceil(int(address.split(' ', 1)[0]) / 100) * 100)) + ' ' + address.split(' ', 1)[1]
             else:
-                if last_address != None:
-                    prev = last_address
                 last_address = str(int(math.ceil(int(address.address.split(' ', 1)[0]) / 100) * 100)) + ' ' + address.address.split(' ', 1)[1]
 
             if last_address in address_points:
@@ -47,22 +41,14 @@ def process_data(data):
             else:
                 print('Adding data to', last_address)
                 inserted_at = datetime.now().strftime('%Y%m%d%H%M%S%f')
-                if prev != None:
-                    address_points[prev] = {
-                        'end_lat': data['lat'][index - 1],
-                        'end_long': data['long'][index - 1]
-                    }
                 address_points[last_address] = {
-                    'start_lat': current_point[0],
-                    'start_long': current_point[1],
                     'lat': [current_point[0]],
                     'long': [current_point[1]],
                     'x': [data['x'][index]],
                     'y': [data['y'][index]],
                     'z': [data['z'][index]],
                     'inserted_at': inserted_at,
-                    'address': last_address,
-                    'processed': 'false'
+                    'address': last_address
                 }
                 keys.append((last_address, inserted_at))
 

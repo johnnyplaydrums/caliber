@@ -84,7 +84,7 @@ def get_jenks_breaks(data_list, number_class):
         kclass.append(float(min(data_list)))
     kclass[number_class] = float(data_list[len(data_list) - 1])
     count_num = number_class
-    while count_num >= 2:
+    while count_num >= 2 and len(data_list) > 1:
         idx = int((mat1[k][count_num]) - 2)
         kclass[count_num - 1] = float(data_list[idx])
         k = int((mat1[k][count_num] - 1))
@@ -101,24 +101,25 @@ def classify(addresses):
     all_tuples = []
     print('BREAKS')
     print(breaks)
-    for num in addresses:
-        mean = float(num['mean'])
-        if mean >= breaks[0] and mean <= breaks[1]:
-            num['rating'] = 'Good'
-            all_tuples.append(num)
-            # my_tuple = (num , 'Good')
-            # all_tuples.append(my_tuple)
-            #print(my_tuple)
-        elif mean >= breaks[1] and mean <= breaks[3]:
-            num['rating'] = 'Fair'
-            all_tuples.append(num)
-            # my_tuple = (num , 'Fair')
-            # all_tuples.append(my_tuple)
-            #print(my_tuple)
-        else:
-            num['rating'] = 'Bad'
-            all_tuples.append(num)
-            # my_tuple = (num , 'Bad')
-            # all_tuples.append(my_tuple)
-            #print(my_tuple)
+    if len(breaks) == 4:
+        for num in addresses:
+            mean = float(num['mean'])
+            if mean >= breaks[0] and mean <= breaks[1]:
+                num['rating'] = 'Good'
+                all_tuples.append(num)
+                # my_tuple = (num , 'Good')
+                # all_tuples.append(my_tuple)
+                #print(my_tuple)
+            elif mean >= breaks[1] and mean <= breaks[3]:
+                num['rating'] = 'Fair'
+                all_tuples.append(num)
+                # my_tuple = (num , 'Fair')
+                # all_tuples.append(my_tuple)
+                #print(my_tuple)
+            else:
+                num['rating'] = 'Bad'
+                all_tuples.append(num)
+                # my_tuple = (num , 'Bad')
+                # all_tuples.append(my_tuple)
+                #print(my_tuple)
     return all_tuples

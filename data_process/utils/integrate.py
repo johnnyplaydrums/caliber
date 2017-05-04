@@ -44,10 +44,16 @@ def integrate(df, address):
             Key={
                 'address': address
             },
-            UpdateExpression="set mean_count = mean_count + :c, mean = :m",
+            UpdateExpression="set mean_count = mean_count + :c, mean = :m, \
+                                start_lat = :slat, start_long = :slong, \
+                                end_lat = :elat, end_long = :elong",
             ExpressionAttributeValues={
                 ':c': decimal.Decimal(1),
-                ':m': new_mean
+                ':m': new_mean,
+                ':slat': df['lat'][0],
+                ':slong': df['long'][0],
+                ':elat': df['lat'][len(df['lat']) - 1],
+                ':elong': df['long'][len(df['long']) - 1]
             },
         )
     else:
@@ -58,10 +64,10 @@ def integrate(df, address):
             'mean': total_area,
             'mean_count': decimal.Decimal(1),
             'inserted_at': inserted_at,
-            'start_lat': df['start_lat'],
-            'start_long': df['start_long'],
-            'end_lat': df['end_lat'],
-            'end_long': df['end_long']
+            'start_lat': df['lat'][0],
+            'start_long': df['long'][0],
+            'end_lat': df['lat'][len(df['lat']) - 1],
+            'end_long': df['long'][len(df['long']) - 1]
         }
         data_process_table.put_item(Item=item)
 

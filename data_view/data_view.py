@@ -11,11 +11,9 @@ def index():
 
 @application.route('/get_data', methods=['GET'])
 def get_data():
-    data = {
-        'recent': get_recent(),
-        'worst': get_worst()
-    }
-    return jsonify(data=data)
+    recent = get_recent()
+    worst = get_worst()
+    return jsonify(recent=recent, worst=worst)
 
 
 if __name__ == "__main__":

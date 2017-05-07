@@ -1,5 +1,5 @@
 import requests
-from flask import Flask, render_template, request, jsonify
+from flask import Flask, request, jsonify
 from utils.process_data import process_data
 
 application = Flask(__name__)

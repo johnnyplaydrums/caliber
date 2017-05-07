@@ -1,5 +1,5 @@
 from flask import Flask, render_template, request, jsonify
-from get_data import get_recent, get_worst
+from utils.get_data import get_recent, get_worst
 
 application = Flask(__name__)
 application.config['SEND_FILE_MAX_AGE_DEFAULT'] = 0
@@ -12,8 +12,8 @@ def index():
 @application.route('/get_data', methods=['GET'])
 def get_data():
     data = {
-        'recent' = get_recent()
-        'worst' = get_worst()
+        'recent': get_recent(),
+        'worst': get_worst()
     }
     return jsonify(data=data)
 

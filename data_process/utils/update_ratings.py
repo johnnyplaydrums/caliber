@@ -15,10 +15,10 @@ def update_ratings():
     # if we havent recieve all streets yet, continue collecting the rest
     while 'LastEvaluatedKey' in response:
         print('Getting more!')
-        response = table.scan(
+        response = data_process_table.scan(
             ExclusiveStartKey=response['LastEvaluatedKey']
         )
-        addresses.append(response['Items'])
+        addresses.extend(response['Items'])
 
     # jenks breaks algorithm
     rated_streets = classify(addresses)
@@ -30,10 +30,9 @@ def update_ratings():
             Key={
                 'address': address['address']
             },
-            UpdateExpression="set rating = :r, updated_at = :t",
+            UpdateExpression="set rating = :r",
             ExpressionAttributeValues={
-                ':r': address['rating'],
-                ':t': updated_at
+                ':r': address['rating']
             }
         )
     return rated_streets

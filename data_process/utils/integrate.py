@@ -39,6 +39,7 @@ def integrate(df, address):
         old_mean = decimal.Decimal(item[u'mean'])
         mean_count = item[u'mean_count']
         new_mean = str(round(((mean_count * old_mean) + decimal.Decimal(total_area)) / (mean_count + 1), 15))
+        updated_at = datetime.now().strftime('%Y%m%d%H%M%S%f')
         print('Update address: %s' % address, old_mean, new_mean, total_area)
         r = data_process_table.update_item(
             Key={
@@ -46,10 +47,12 @@ def integrate(df, address):
             },
             UpdateExpression="set mean_count = mean_count + :c, mean = :m, \
                                 start_lat = :slat, start_long = :slong, \
-                                end_lat = :elat, end_long = :elong",
+                                end_lat = :elat, end_long = :elong, \
+                                updated_at = :t",
             ExpressionAttributeValues={
                 ':c': decimal.Decimal(1),
                 ':m': new_mean,
+                ':t': updated_at,
                 ':slat': df['lat'][0],
                 ':slong': df['long'][0],
                 ':elat': df['lat'][len(df['lat']) - 1],
@@ -64,6 +67,7 @@ def integrate(df, address):
             'mean': total_area,
             'mean_count': decimal.Decimal(1),
             'inserted_at': inserted_at,
+            'updated_at': inserted_at,
             'start_lat': df['lat'][0],
             'start_long': df['long'][0],
             'end_lat': df['lat'][len(df['lat']) - 1],

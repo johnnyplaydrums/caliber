@@ -84,7 +84,7 @@ class MainViewController: UIViewController, CLLocationManagerDelegate {
     
     func post_data(){
         print("POST CALLED")
-        let url = URL(string: "http://monitorcaliber.com/data")!
+        let url = URL(string: "http://34.205.150.122/data")!
         var request = URLRequest(url: url)
         let jsonObject: [String: [String]]  = [
             "x": x_array,

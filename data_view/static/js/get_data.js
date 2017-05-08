@@ -39,8 +39,8 @@ $(function() {
             num = i + 1
             line = $('<div class="line">').text(
                 num +  '. ' +
-                worst[i].address + ' : ' + worst[i].updated_at + ' : ' +
-                worst[i].mean + ' : '  + worst[i].rating
+                recent[i].address + ' : ' + recent[i].updated_at + ' : ' +
+                recent[i].mean + ' : '  + recent[i].rating
             )
             column$.append(line)
         }

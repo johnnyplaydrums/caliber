@@ -9,10 +9,7 @@ def get_recent():
     sorted_addresses = sorted(addresses,
                               key=lambda address: int(address['updated_at']),
                               reverse=True)[:20]
-
-    for address in sorted_addresses:
-        time = datetime.strptime(str(address['updated_at']), '%Y%m%d%H%M%S%f')
-        address['updated_at'] = datetime.strftime(time, '%b %d %Y %I:%M:%S %p')
+    sorted_addresses = update_addresses(sorted_addresses)
     return sorted_addresses
 
 
@@ -21,7 +18,7 @@ def get_worst():
     sorted_addresses = sorted(addresses,
                               key=lambda address: float(address['mean']),
                               reverse=True)[:20]
-
+    sorted_addresses = update_addresses(sorted_addresses)
     return sorted_addresses
 
 
@@ -33,5 +30,12 @@ def get_all():
             ExclusiveStartKey=response['LastEvaluatedKey']
         )
         addresses.extend(response['Items'])
+    return addresses
+
+def update_addresses(addresses):
+    for address in addresses:
+        time = datetime.strptime(str(address['updated_at']), '%Y%m%d%H%M%S%f')
+        address['updated_at'] = datetime.strftime(time, '%b %d %Y %I:%M:%S %p')
+        address['mean_count'] = int(address['mean_count'])
 
     return addresses

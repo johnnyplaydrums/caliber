@@ -1,0 +1,10 @@
+.line {
+    font-weight: bold;
+    padding: 5px 0;
+    font-size: 20px;
+}
+
+.column {
+    width: 49%;
+    display: inline-block;
+}

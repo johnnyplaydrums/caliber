@@ -5,9 +5,17 @@
         <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
     </head>
     <body>
-        <h1>Caliber</h1>
-        {% block body%}
-        {% endblock %}
+        <div id="content">
+            <div id="header">
+                <h1>Caliber</h1>
+                <div id="loading">
+                    <img src="{{ url_for('static', filename='loading.gif') }}">
+                    <span id="loading-text">Can haz more data?</span>
+                </div>
+            </div>
+            {% block body%}
+            {% endblock %}
+        </div>
 
         <script src="{{ url_for('static', filename='js/jquery.js') }}"></script>
         <script src="{{ url_for('static', filename='js/get_data.js') }}"></script>

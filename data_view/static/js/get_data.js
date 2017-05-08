@@ -1,18 +1,8 @@
 $(function() {
+    get_data();
     setInterval(function() {
-        $.ajax({
-            type: 'get',
-            url: '/get_data',
-            dataType: 'json'
-        })
-        .done(function(response) {
-            console.log(response)
-            update_view(response);
-        })
-        .always(function() {
-            console.log('data received');
-        });
-    }, 5000);
+        get_data();
+    }, 6000);
 
     function update_view(data) {
         var recent = data.recent,
@@ -64,5 +54,25 @@ $(function() {
         } else if (rating === 'Bad') {
             return 'red'
         }
+    }
+
+    function get_data() {
+        $('#loading').css('display', 'inline-block');
+        $.ajax({
+            type: 'get',
+            url: '/get_data',
+            dataType: 'json'
+        })
+        .done(function(response) {
+            console.log(response)
+            setTimeout(function() {
+                $('#loading').hide();
+                update_view(response);
+            }, 800)
+        })
+        .fail(function() {
+            console.log('data received');
+            $('#loading').hide();
+        });
     }
 });

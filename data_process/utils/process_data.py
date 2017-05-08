@@ -18,6 +18,4 @@ def process_data(keys):
         integrate(r[u'Items'][0], key[0])
 
     ratings = update_ratings()
-    print('Rated streets:')
-    print(ratings)
     return

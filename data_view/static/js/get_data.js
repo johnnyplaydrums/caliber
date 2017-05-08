@@ -18,33 +18,51 @@ $(function() {
         var recent = data.recent,
             worst = data.worst,
             column$ = $('<div>'),
-            line,
-            num,
+            list$ = $('<ol class="list">'),
+            list_item,
             i;
 
         for (var i = 0; i < recent.length; i++) {
-            num = i + 1
-            line = $('<div class="line">').text(
-                num +  '. ' +
-                recent[i].address + ' : ' + recent[i].updated_at + ' : ' +
-                recent[i].mean + ' : '  + recent[i].rating
+            color = get_color(recent[i].rating);
+            list_item = $('<li class="item">').append(
+                recent[i].address + ' : ' + recent[i].updated_at,
+                $('<br>'),
+                recent[i].mean + ' : ',
+                $('<span>').css('color', color).append(recent[i].rating)
             )
-            column$.append(line)
+
+            list$.append(list_item);
+
         }
 
+        column$.append(list$)
         $('#recent').html(column$);
 
         column$ = $('<div>');
+        list$ = $('<ol class="list">');
         for (var i = 0; i < worst.length; i++) {
-            num = i + 1
-            line = $('<div class="line">').text(
-                num +  '. ' +
-                worst[i].address + ' : ' + worst[i].updated_at + ' : ' +
-                worst[i].mean + ' : '  + worst[i].rating
+            color = get_color(worst[i].rating);
+            list_item = $('<li class="item">').append(
+                worst[i].address + ' : ' + worst[i].updated_at,
+                $('<br>'),
+                worst[i].mean + ' : ',
+                $('<span>').css('color', color).append(worst[i].rating)
             )
-            column$.append(line)
+
+            list$.append(list_item);
         }
 
+        column$.append(list$);
         $('#worst').html(column$);
+    }
+
+    function get_color(rating) {
+        if (rating === 'Good') {
+            return 'green'
+        } else if (rating === 'Fair') {
+            return 'orange'
+        } else if (rating === 'Bad') {
+            return 'red'
+        }
     }
 });

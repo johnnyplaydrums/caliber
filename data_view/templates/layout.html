@@ -2,14 +2,15 @@
     <head>
         <title>Caliber</title>
         <link rel="icon" type="image/png" href="{{ url_for('static', filename='favicon.png') }}">
+        <link rel="icon" type="image/png" href="{{ url_for('static', filename='css/style.css') }}">
     </head>
     <body>
         <h1>Caliber</h1>
         {% block body%}
         {% endblock %}
 
-        <script src="{{ url_for('static', filename='javascript/jquery.js') }}"></script>
-        <script src="{{ url_for('static', filename='javascript/get_data.js') }}"></script>
+        <script src="{{ url_for('static', filename='js/jquery.js') }}"></script>
+        <script src="{{ url_for('static', filename='js/get_data.js') }}"></script>
 
     </body>
 </html>

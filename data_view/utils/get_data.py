@@ -37,5 +37,6 @@ def update_addresses(addresses):
         time = datetime.strptime(str(address['updated_at']), '%Y%m%d%H%M%S%f')
         address['updated_at'] = datetime.strftime(time, '%b %d %Y %I:%M:%S %p')
         address['mean_count'] = int(address['mean_count'])
+        address['address'] = ','.join(address['address'].split(',', 2)[:2])
 
     return addresses

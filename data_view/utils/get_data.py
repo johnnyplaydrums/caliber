@@ -1,7 +1,7 @@
 import boto3
 from datetime import datetime
 dynamodb = boto3.resource('dynamodb', region_name='us-east-1')
-data_process_table = dynamodb.Table('data-process')
+data_process_table = dynamodb.Table('data-process-test')
 
 
 def get_recent():

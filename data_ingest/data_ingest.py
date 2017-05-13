@@ -13,7 +13,7 @@ def hello():
 def data_ingest():
     data = request.get_json()
     keys = process_data(data)
-    req = requests.post('http://34.205.34.72/new_data', json=keys)
+    req = requests.post('http://34.224.45.193/new_data', json=keys)
     return jsonify(result="success")
 
 @application.route("/get_data", methods=["GET"])

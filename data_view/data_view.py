@@ -15,6 +15,10 @@ def get_data():
     worst = get_worst()
     return jsonify(recent=recent, worst=worst)
 
+@application.route('/map')
+def map():
+    return render_template('map.html')
+
 
 if __name__ == "__main__":
     application.run(host='0.0.0.0')

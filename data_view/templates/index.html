@@ -2,11 +2,12 @@
 
 {% block body %}
     <div class="column">
-        <h2>Most recent</h2>
-        <div id="recent"></div>
-    </div>
-    <div class="column">
         <h2>Worst roads</h2>
         <div id="worst"></div>
     </div>
+    <div class="column">
+        <h2>Most recent</h2>
+        <div id="recent"></div>
+    </div>
+    <script src="{{ url_for('static', filename='js/get_data.js') }}"></script>
 {% endblock %}

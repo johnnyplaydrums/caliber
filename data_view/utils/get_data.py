@@ -8,7 +8,7 @@ def get_recent():
     addresses = get_all()
     sorted_addresses = sorted(addresses,
                               key=lambda address: int(address['updated_at']),
-                              reverse=True)[:20]
+                              reverse=True)[:15]
     sorted_addresses = update_addresses(sorted_addresses)
     return sorted_addresses
 
@@ -17,7 +17,7 @@ def get_worst():
     addresses = get_all()
     sorted_addresses = sorted(addresses,
                               key=lambda address: float(address['mean']),
-                              reverse=True)[:20]
+                              reverse=True)[:15]
     sorted_addresses = update_addresses(sorted_addresses)
     return sorted_addresses
 

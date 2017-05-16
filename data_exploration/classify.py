@@ -57,7 +57,6 @@ def classify_graph(data):
     breaks = get_jenks_breaks(data, 3)
     for line in breaks:
         plt.plot([line for _ in range(len(data))], 'k--')
-
     plt.plot(data, linestyle="", marker="o")
     plt.grid(True)
     plt.show()

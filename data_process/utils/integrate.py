@@ -8,7 +8,6 @@ from scipy.integrate import simps
 dynamodb = boto3.resource('dynamodb', region_name='us-east-1')
 data_ingest_table = dynamodb.Table('data-ingest')
 data_process_table = dynamodb.Table('data-process')
-data_process_table_test = dynamodb.Table('data-process-test')
 
 
 def integrate(df, address):
@@ -60,25 +59,6 @@ def integrate(df, address):
                 ':elong': df['long'][len(df['long']) - 1]
             },
         )
-
-        r = data_process_table_test.update_item(
-            Key={
-                'address': address
-            },
-            UpdateExpression="set mean_count = mean_count + :c, mean = :m, \
-                                start_lat = :slat, start_long = :slong, \
-                                end_lat = :elat, end_long = :elong, \
-                                updated_at = :t",
-            ExpressionAttributeValues={
-                ':c': decimal.Decimal(1),
-                ':m': new_mean,
-                ':t': updated_at,
-                ':slat': df['lat'][0],
-                ':slong': df['long'][0],
-                ':elat': df['lat'][len(df['lat']) - 1],
-                ':elong': df['long'][len(df['long']) - 1]
-            },
-        )
     else:
         print('New address: %s' % address, total_area)
         inserted_at = datetime.now().strftime('%Y%m%d%H%M%S%f')
@@ -94,6 +74,5 @@ def integrate(df, address):
             'end_long': df['long'][len(df['long']) - 1]
         }
         data_process_table.put_item(Item=item)
-        data_process_table_test.put_item(Item=item)
 
     return total_area

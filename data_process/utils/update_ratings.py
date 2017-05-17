@@ -6,7 +6,6 @@ from boto3.dynamodb.conditions import Key
 dynamodb = boto3.resource('dynamodb', region_name='us-east-1')
 data_ingest_table = dynamodb.Table('data-ingest')
 data_process_table = dynamodb.Table('data-process')
-data_process_table_test = dynamodb.Table('data-process-test')
 
 def update_ratings():
     # retrieve all streets
@@ -28,15 +27,6 @@ def update_ratings():
     for address in rated_streets:
         updated_at = datetime.now().strftime('%Y%m%d%H%M%S%f')
         response = data_process_table.update_item(
-            Key={
-                'address': address['address']
-            },
-            UpdateExpression="set rating = :r",
-            ExpressionAttributeValues={
-                ':r': address['rating']
-            }
-        )
-        response = data_process_table_test.update_item(
             Key={
                 'address': address['address']
             },

@@ -2,6 +2,14 @@
     padding: 0 15px;
 }
 
+.nav {
+    font-size: 18px;
+}
+
+.list-link {
+    margin-bottom: 10px;
+}
+
 .item {
     font-weight: bold;
     padding: 5px 0;

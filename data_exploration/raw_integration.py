@@ -43,5 +43,3 @@ def integrate(filename):
         total_area.append(abs(area))
 
     return total_area
-
-print(integrate('gyro_x.csv'))

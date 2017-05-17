@@ -3,6 +3,7 @@
         <title>Caliber</title>
         <link rel="icon" type="image/png" href="{{ url_for('static', filename='favicon.png') }}">
         <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+        <script src="{{ url_for('static', filename='js/jquery.js') }}"></script>
     </head>
     <body>
         <div id="content">
@@ -17,6 +18,5 @@
             {% endblock %}
         </div>
 
-        <script src="{{ url_for('static', filename='js/jquery.js') }}"></script>
     </body>
 </html>
